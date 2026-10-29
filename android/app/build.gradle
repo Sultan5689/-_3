@@ -26,9 +26,30 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    def releaseKeystorePath = System.getenv("ANDROID_KEYSTORE_PATH")
+    def releaseStorePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+    def releaseKeyAlias = System.getenv("ANDROID_KEY_ALIAS")
+    def releaseKeyPassword = System.getenv("ANDROID_KEY_PASSWORD")
+    def hasReleaseSigning = [releaseKeystorePath, releaseStorePassword, releaseKeyAlias, releaseKeyPassword]
+        .every { it != null && !it.trim().isEmpty() }
+
+    if (hasReleaseSigning) {
+        signingConfigs {
+            release {
+                storeFile file(releaseKeystorePath)
+                storePassword releaseStorePassword
+                keyAlias releaseKeyAlias
+                keyPassword releaseKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            // Never sign a production build with Android's public debug key.
+            if (hasReleaseSigning) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }
