@@ -8,3 +8,11 @@ build/
 .flutter-plugins
 .flutter-plugins-dependencies
 local.properties
+*.jks
+*.keystore
+key.properties
+*.apk
+*.aab
+.env
+.env.*
+!.env.example
