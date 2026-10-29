@@ -7,3 +7,4 @@ build/
 *.swp
 .flutter-plugins
 .flutter-plugins-dependencies
+local.properties
